@@ -1,23 +1,29 @@
 package bitset
 
 type Bitset interface {
-	Set(int)
-	Has(int) bool
+	Set(uint)
+	Get(uint) bool
+	Length() uint
 }
 
 type bitset struct {
-	set bool
+	bits []uint64
+	length uint
 }
 
-func Create(size int) Bitset {
-	return &bitset{}
+func Create(size uint) Bitset {
+	return &bitset{
+		length: size,
+	}
 }
 
-
-func (b* bitset) Set(index int) {
-	b.set = true
+func (b* bitset) Set(index uint) {
 }
 
-func (b* bitset) Has(index int) bool {
-	return b.set
+func (b* bitset) Get(index uint) bool {
+	return false
+}
+
+func (b *bitset) Length() uint {
+	return b.length
 }
