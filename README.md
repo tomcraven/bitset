@@ -43,3 +43,7 @@ func main() {
 	outputBitset(b) // 01000001
 }
 ```
+
+## Known issues
+
+- Absolutely no bounds checking
