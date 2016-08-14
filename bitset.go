@@ -24,6 +24,8 @@ type Bitset interface {
 	equalsBitset(*bitset) bool
 
 	Output()
+
+	BuildUint8(*uint8) bool
 }
 
 type bitset struct {
@@ -125,4 +127,23 @@ func (b *bitset) Output() {
 		}
 	}
 	fmt.Printf("\n")
+}
+
+func (b *bitset) BuildUint8(output *uint8) bool {
+	if b.Size() < 8 {
+		return false
+	}
+
+	for i := uint(0); i < 8; i++ {
+		if b.Get(i) {
+			(*output) |= 1 << i
+		} else {
+			(*output) &= ^(1 << i)
+		}
+	}
+	return true
+}
+
+func (b *bitset) Slice(begin, end uint) Bitset {
+	return b.CreateCopy()
 }

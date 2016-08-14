@@ -1,6 +1,7 @@
 package bitset_test
 
 import "testing"
+
 import "github.com/tomcraven/bitset"
 
 func TestCreate(t *testing.T) {
@@ -147,4 +148,48 @@ func TestEquals(t *testing.T) {
 	if a.Equals(b) {
 		t.Error("a should now not equal b")
 	}
+}
+
+func buildUint8Test(shouldFail bool, f func() bitset.Bitset, expected uint8, t *testing.T) {
+	b := f()
+	var input uint8
+	if b.BuildUint8(&input) && shouldFail {
+		t.Error("should fail to build")
+	}
+
+	if input != expected {
+		t.Error(input, "does not equal the expected result", expected)
+	}
+}
+
+func TestBuildUint8(t *testing.T) {
+	// Bitset too small
+	buildUint8Test(true, func() bitset.Bitset {
+		b := bitset.Create(1)
+		return b
+	}, 0, t)
+
+	// Bitset big enough but blank
+	buildUint8Test(false, func() bitset.Bitset {
+		b := bitset.Create(8)
+		b.ClearAll()
+		return b
+	}, 0, t)
+
+	// Bitset with all some bits set
+	buildUint8Test(false, func() bitset.Bitset {
+		b := bitset.Create(8)
+		b.SetAll()
+		return b
+	}, 255, t)
+
+	// Bitset with some bits set 01100001 == 97 == 'a'
+	buildUint8Test(false, func() bitset.Bitset {
+		b := bitset.Create(8)
+		b.ClearAll()
+		b.Set(0)
+		b.Set(5)
+		b.Set(6)
+		return b
+	}, 97, t)
 }
