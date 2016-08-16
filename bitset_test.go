@@ -130,10 +130,8 @@ func TestEquals(t *testing.T) {
 		t.Error("a should not equal c")
 	}
 
-	for _, v := range []uint{0, 5, 6, 7} {
-		a.Set(v)
-		b.Set(v)
-	}
+	a.Set(0, 5, 6, 7)
+	b.Set(0, 5, 6, 7)
 
 	if !a.Equals(b) {
 		t.Error("a should equal b")
@@ -188,4 +186,26 @@ func TestBuildUint8(t *testing.T) {
 		b.Set(6)
 		return b
 	}, 97, t)
+}
+func TestSetVarArgs(t *testing.T) {
+	b := bitset.Create(10)
+	b.Set(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+	for i := uint(0); i < b.Size(); i++ {
+		if !b.Get(i) {
+			t.Error("bitset should have bit set at index", i)
+		}
+	}
+}
+
+func TestClearVarArgs(t *testing.T) {
+	b := bitset.Create(10)
+	b.SetAll()
+	b.Clear(0, 1, 2, 3, 4)
+
+	for i := uint(0); i < 5; i++ {
+		if b.Get(i) {
+			t.Error("bitset should not have bitset at index", i)
+		}
+	}
 }
