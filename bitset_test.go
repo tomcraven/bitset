@@ -121,7 +121,18 @@ func TestClearAll(t *testing.T) {
 	}
 }
 
-func TestEquals(t *testing.T) {
+func TestInvert(t *testing.T) {
+	b := bitset.Create(10)
+	b.Invert()
+
+	for i := uint(0); i < b.Size(); i++ {
+		if !b.Get(i) {
+			t.Error("bitset should have the bit at position", i, "set")
+		}
+	}
+}
+
+func TestEqualsBitset(t *testing.T) {
 	a := bitset.Create(10)
 	b := bitset.Create(10)
 	c := bitset.Create(20)
@@ -141,6 +152,31 @@ func TestEquals(t *testing.T) {
 
 	if a.Equals(b) {
 		t.Error("a should now not equal b")
+	}
+}
+
+func TestEqualsSlice(t *testing.T) {
+	b := bitset.Create(10)
+	b.Set(0, 2, 4, 6, 8)
+	slice := b.Slice(0, 10)
+
+	if !b.Equals(slice) {
+		t.Error("bitset and slice should be equal")
+	}
+
+	// Changing these change for both because it's a slice
+	// b == slice == 1000000001
+	b.Set(9)
+	slice.Set(0)
+	if !b.Equals(slice) {
+		t.Error("bitset and slice should be equal")
+	}
+
+	// newBitset == 1000000000
+	newBitset := bitset.Create(10)
+	newBitset.Set(0)
+	if newBitset.Equals(slice) {
+		t.Error("newBitset and the old slice should not be equal")
 	}
 }
 
@@ -187,6 +223,24 @@ func TestBuildUint8(t *testing.T) {
 		return b
 	}, 97, t)
 }
+
+func TestSlice(t *testing.T) {
+	b := bitset.Create(10)
+	b.Set(0)
+	b.Set(1)
+	b.Set(2)
+
+	slice := b.Slice(0, 3)
+	if slice.Size() != 3 {
+		t.Error("sliced bitset should have size", 3)
+	}
+	for i := uint(0); i < slice.Size(); i++ {
+		if !slice.Get(i) {
+			t.Error("sliced bitset should have bit set at index", i)
+		}
+	}
+}
+
 func TestSetVarArgs(t *testing.T) {
 	b := bitset.Create(10)
 	b.Set(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)

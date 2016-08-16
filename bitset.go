@@ -73,22 +73,22 @@ func (b *bitset) ClearAll() {
 	}
 }
 
-func (b *bitset) equalsBitset(other *bitset) bool {
-	if b.Size() != other.Size() {
-		return false
+func (b *bitset) Invert() {
+	for i := range b.bits {
+		b.bits[i] = ^b.bits[i]
 	}
-
-	for i, v := range b.bits {
-		if v != other.bits[i] {
-			return false
-		}
-	}
-
-	return true
 }
 
 func (b *bitset) Equals(other Bitset) bool {
 	return other.equalsBitset(b)
+}
+
+func (b *bitset) equalsBitset(other *bitset) bool {
+	return equalsBitsetBitset(b, other)
+}
+
+func (b *bitset) equalsSlice(other *slice) bool {
+	return equalsBitsetSlice(b, other)
 }
 
 func (b *bitset) Output() {
@@ -118,5 +118,9 @@ func (b *bitset) BuildUint8(output *uint8) bool {
 }
 
 func (b *bitset) Slice(begin, end uint) Bitset {
-	return b.CreateCopy()
+	return &slice{
+		begin: begin,
+		end:   end,
+		other: b,
+	}
 }
