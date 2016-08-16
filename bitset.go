@@ -5,42 +5,9 @@ import (
 	"math"
 )
 
-const bitsPerUint64 = 64 // sizeof(uint64) * 8
-
-type Bitset interface {
-	Set(uint)
-	SetTo(uint, bool)
-	SetAll()
-
-	Clear(uint)
-	ClearAll()
-
-	Get(uint) bool
-
-	Size() uint
-	CreateCopy() Bitset
-
-	Equals(Bitset) bool
-	equalsBitset(*bitset) bool
-
-	Output()
-
-	BuildUint8(*uint8) bool
-}
-
 type bitset struct {
 	bits []uint64
 	size uint
-}
-
-func bitArraySize(numBits uint) uint {
-	return (numBits / bitsPerUint64) + 1
-}
-
-func Create(size uint) Bitset {
-	b := bitset{}
-	b.init(size)
-	return &b
 }
 
 func (b *bitset) init(size uint) {

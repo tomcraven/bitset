@@ -4,10 +4,6 @@ import "testing"
 
 import "github.com/tomcraven/bitset"
 
-func TestCreate(t *testing.T) {
-	bitset.Create(10)
-}
-
 func TestSetGet(t *testing.T) {
 	bitset := bitset.Create(10)
 	if bitset.Get(0) {
