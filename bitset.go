@@ -54,7 +54,7 @@ func (b *bitset) Size() uint {
 	return b.size
 }
 
-func (b *bitset) CreateCopy() Bitset {
+func (b *bitset) Clone() Bitset {
 	new := bitset{}
 	new.init(b.size)
 	copy(new.bits, b.bits)

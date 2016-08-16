@@ -64,13 +64,13 @@ func TestSetTo(t *testing.T) {
 	}
 }
 
-func TestCreateCopy(t *testing.T) {
+func TestClone(t *testing.T) {
 	bitset := bitset.Create(10)
 	bitset.Set(0)
 	bitset.Set(3)
 	bitset.Set(8)
 
-	copy := bitset.CreateCopy()
+	copy := bitset.Clone()
 	for _, i := range []uint{0, 3, 8} {
 		if !copy.Get(i) {
 			t.Error("bitset should not have the bit at position", i, "set")
