@@ -132,7 +132,3 @@ func main() {
 }
 
 ```
-
-## Known issues
-
-- Absolutely no bounds checking
