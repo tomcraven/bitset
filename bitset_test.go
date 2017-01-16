@@ -263,3 +263,20 @@ func TestClearVarArgs(t *testing.T) {
 		}
 	}
 }
+
+func TestSetBeyondSize(t *testing.T) {
+	b := bitset.Create(63)
+	b.Set(64)
+}
+
+func TestClearBeyondSize(t *testing.T) {
+	b := bitset.Create(63)
+	b.Clear(64)
+}
+
+func TestGetBeyondSize(t *testing.T) {
+	b := bitset.Create(63)
+	if b.Get(64) {
+		t.Error("getting beyond the size of the bitset should return false")
+	}
+}

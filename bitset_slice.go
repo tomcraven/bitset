@@ -44,6 +44,9 @@ func (s *slice) Invert() {
 }
 
 func (s *slice) Get(index uint) bool {
+	if index >= s.Size() {
+		return false
+	}
 	return s.other.Get(s.begin + index)
 }
 

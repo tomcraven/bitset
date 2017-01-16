@@ -18,6 +18,10 @@ func (b *bitset) init(size uint) {
 func (b *bitset) Set(indexes ...uint) {
 	for i := uint(0); i < uint(len(indexes)); i++ {
 		index := indexes[i]
+		if index >= b.Size() {
+			continue
+		}
+
 		elementIndex := index / bitsPerUint64
 		bitIndex := index % bitsPerUint64
 		b.bits[elementIndex] |= 1 << bitIndex
@@ -32,10 +36,11 @@ func (b *bitset) SetTo(index uint, value bool) {
 	}
 }
 
-func (b *bitset) setImpl(index uint) {
-}
-
 func (b *bitset) Get(index uint) bool {
+	if index > b.Size() {
+		return false
+	}
+
 	elementIndex := index / bitsPerUint64
 	bitIndex := index % bitsPerUint64
 	return ((b.bits[elementIndex] >> bitIndex) & 1) == 1
@@ -44,6 +49,10 @@ func (b *bitset) Get(index uint) bool {
 func (b *bitset) Clear(indexes ...uint) {
 	for i := uint(0); i < uint(len(indexes)); i++ {
 		index := indexes[i]
+		if index > b.Size() {
+			continue
+		}
+
 		elementIndex := index / bitsPerUint64
 		bitIndex := index % bitsPerUint64
 		b.bits[elementIndex] &= ^(1 << bitIndex)

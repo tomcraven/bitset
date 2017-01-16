@@ -196,3 +196,24 @@ func TestSliceBuildUint8(t *testing.T) {
 		return b.Slice(8, 16)
 	}, 97, t)
 }
+
+func TestSliceSetBeyondSize(t *testing.T) {
+	b := bitset.Create(63)
+	slice := b.Slice(0, b.Size())
+	slice.Set(64)
+}
+
+func TestSliceClearBeyondSize(t *testing.T) {
+	b := bitset.Create(63)
+	slice := b.Slice(0, b.Size())
+	slice.Clear(64)
+}
+
+func TestSliceGetBeyondSize(t *testing.T) {
+	b := bitset.Create(63)
+	b.SetAll()
+	slice := b.Slice(0, 10)
+	if slice.Get(slice.Size()) {
+		t.Error("getting beyond the size of the bitset should return false")
+	}
+}

@@ -84,6 +84,8 @@ func main() {
 	slicing()
 	building()
 
+	// TODO: create from string
+
 	/*
 		Program output:
 
